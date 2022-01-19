@@ -20,15 +20,7 @@ def create_body():
                         M = MaterialPoint(A1, A2, 0, 0,0,0,[],[])
                         MatPoints.append(M)
                         
-                        
-            for prt in range(0, 2):
-                for prt2 in range(0, 2):
-                    for i in range(0, points):
-                        for j in range(0, points):
-                            A1 = C1 + (-1) ** prt * 2 / points * i
-                            A2 = C2 + (-1) ** (prt2) * 2 / points * j
-                            M = MaterialPoint(A1, A2,0,0, 0, 0, [], [])
-                            MatPoints.append(M)
+                       
 
             return MatPoints
     MatBody = MaterialBody( -2.5,2.5,3,get_Materialpoints(3,-2,2))
