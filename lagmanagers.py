@@ -7,13 +7,9 @@ import numpy as np
 # функция для создания тела
 def create_body():
     def get_Materialpoints(points,C1,C2):
-        def f1(x):
-            f = --m.log(x+1)
-            return f
-        def f2(x):
-            f = x
-            return f
-        Points = []
+        MatPoints = []
+        
+        
         for prt in range(1, 3):
             for prt2 in range(1, 3):
                 for i in range(0, points):
@@ -21,23 +17,20 @@ def create_body():
                         A1 = C1 + (-1)**prt * 2 / points * i
                         A2 = C2 + (-1)**(prt2) * 2 / points * j
 
-                        v2 = f2(A2)
-                        v1 = f1(A2)
-                        M = MaterialPoint(A1, A2, A1, A2,v1,v2,[],[])
-                        Points.append(M)
+                        M = MaterialPoint(A1, A2, 0, 0,0,0,[],[])
+                        MatPoints.append(M)
+                        
+                        
             for prt in range(0, 2):
                 for prt2 in range(0, 2):
                     for i in range(0, points):
                         for j in range(0, points):
                             A1 = C1 + (-1) ** prt * 2 / points * i
                             A2 = C2 + (-1) ** (prt2) * 2 / points * j
+                            M = MaterialPoint(A1, A2,0,0, 0, 0, [], [])
+                            MatPoints.append(M)
 
-                            v2 = f2(A2)
-                            v1 = f1(A2)
-                            M = MaterialPoint(A1, A2, A1, A2, v1, v2, [], [])
-                            Points.append(M)
-
-            return Points
+            return MatPoints
     MatBody = MaterialBody( -2.5,2.5,3,get_Materialpoints(3,-2,2))
 
     return MatBody
