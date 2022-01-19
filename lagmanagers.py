@@ -3,44 +3,7 @@ from lagmodels import MaterialBody
 from lagmodels import MaterialPoint
 import math as m
 import numpy as np
-# Функция для интегратора
 
-
-def integ (steps,y0,x0,xf,f):
-    step = (xf - x0)/steps
-    Yd = {'y 0': y0}
-    x = x0
-    X = [x]
-    for i in range (1,steps):
-        x = x + step
-        X.append(x)
-        yn = Yd['y ' + str(i - 1)]
-        y = yn + step*1/2*f(x)*yn
-        Yd.update({'y ' + str(i):y})
-    Y = []
-    for i in Yd.keys():
-        Y.append(Yd[i])
-    return Y,X
-# Функция для получения траектории
-def trajctory(steps,t0,tf,X1,X2):
-    def f1(x):
-        try:
-            f =  -m.log(x+1)
-            return f
-        except Exception:
-            f = 0
-            return f
-    def f2(x):
-        f = x
-        return f
-
-    x1,T = integ(steps,X1,t0,tf,f1)
-    x2,T = integ(steps,X2,t0,tf,f2)
-    x1f = x1[len(x1)-1]
-    x2f = x1[len(x2)-1]
-    v1 = f1(x1f)
-    v2 = f2(x2f)
-    return  x1,x2,v1,v2,x1,x2
 # функция для создания тела
 def create_body():
     def get_Materialpoints(points,C1,C2):
@@ -75,10 +38,48 @@ def create_body():
                             Points.append(M)
 
             return Points
-    MatBody = MaterialBody( -2.5,2.5,3,get_Materialpoints(5,-2,2))
+    MatBody = MaterialBody( -2.5,2.5,3,get_Materialpoints(3,-2,2))
 
     return MatBody
 
+
+def integ(steps, y0, x0, xf, f):
+    step = (xf - x0) / steps
+
+    Yd = {'y 0': y0}
+
+    x = x0
+
+    X = [x]
+    for i in range(1, steps):
+        x = x + step
+        X.append(x)
+        yn = Yd['y ' + str(i - 1)]
+        y = yn + step * 1 / 2 * f(x) * yn
+        Yd.update({'y ' + str(i): y})
+    Y = []
+    for i in Yd.keys():
+        Y.append(Yd[i])
+    return Y, X
+def trajctory(steps,t0,tf,X1,X2):
+    def f1(x):
+        try:
+            f =  -m.log(x+1)
+            return f
+        except Exception:
+            f = 0
+            return f
+    def f2(x):
+        f = x
+        return f
+
+    x1,T = integ(steps,X1,t0,tf,f1)
+    x2,T = integ(steps,X2,t0,tf,f2)
+    x1f = x1[len(x1)-1]
+    x2f = x1[len(x2)-1]
+    v1 = f1(x1f)
+    v2 = f2(x2f)
+    return  x1,x2,x1f,x2f,v1,v2
 # движение материального тела
 
 def move_material_body (MatBody):
@@ -101,12 +102,9 @@ def move_material_body (MatBody):
 
 
         for i in MatBody.Points:
-
             plt.scatter(i.X1, i.X2)
-
             plt.plot(i.T1, i.T2)
-
-        plt.plot(OX1, OY1, c='y')
-        plt.plot(OX2, OY2, c='y')
+        plt.plot(OX1, OY1, c='b')
+        plt.plot(OX2, OY2, c='b')
 
     return MatBody
